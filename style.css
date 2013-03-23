@@ -1,0 +1,78 @@
+/* Sass Control
+------------------------------------- */
+/* =CONTACT FORM
+---------------------------------- */
+.rt-mrcf {
+  color: #333333; }
+  .rt-mrcf label, .rt-mrcf input, .rt-mrcf textarea {
+    display: block; }
+  .rt-mrcf label {
+    font-size: 16px;
+    margin: 20px 0 0 0; }
+  .rt-mrcf .rt-mrcf-input {
+    font-size: 16px !important;
+    border: 1px solid #cccccc;
+    -moz-border-radius: 3px;
+    /* Firefox */
+    -webkit-border-radius: 3px;
+    /* Safari, Chrome */
+    border-radius: 3px;
+    /* CSS3 */
+    width: 90%;
+    padding: 5px;
+    color: #b3b3b3; }
+    .rt-mrcf .rt-mrcf-input:focus {
+      outline: none; }
+  .rt-mrcf .rt-mrcf-submit {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    font-size: 16px;
+    color: white !important;
+    margin: 20px 0 0 0;
+    text-align: right; }
+    .rt-mrcf .rt-mrcf-submit:hover {
+      cursor: pointer; }
+    .rt-mrcf .rt-mrcf-submit:focus {
+      outline-color: #288597; }
+  .rt-mrcf textarea {
+    height: 125px; }
+    .rt-mrcf textarea:focus {
+      outline: none; }
+
+.rt-mrcf-required {
+  font-size: 12px !important; }
+
+.error {
+  font-size: 14px !important;
+  color: #cc0000;
+  font-style: italic; }
+
+.footer-widget .error {
+  color: white; }
+
+/* Styling for footer widget */
+.footer-widget .rt-mrcf label, .footer-widget .rt-mrcf input, .footer-widget .rt-mrcf textarea {
+  font-size: 13px; }
+.footer-widget .rt-success {
+  padding: 0;
+  border: none;
+  background: transparent; }
+  .footer-widget .rt-success span {
+    font-size: 20px;
+    font-weight: bold;
+    float: left; }
+
+.rt-input-blur {
+  color: black !important; }
+
+/* Callout Boxes */
+.rt-success {
+  padding: 10px;
+  border: 1px solid #009b77;
+  background: #f2f2f2;
+  font-size: 14px; }
+  .rt-success span {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 10px 0 0; }

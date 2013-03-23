@@ -1,0 +1,138 @@
+/* Sass Control
+------------------------------------- */
+$primary: #000000;
+$accent-1: #288597;
+$shadow: #CCCCCC;
+$success: #009b77;
+$error: #CC0000;
+
+@mixin gradient( $bottom-color: $primary, $top-color: lighten($primary, 25%) ) {
+  background-color: $top-color;
+  background-image: -webkit-gradient(linear, left top, left bottom, from($top-color), to($bottom-color) );
+  background-image: -webkit-linear-gradient(top, $top-color, $bottom-color);
+  background-image: -moz-linear-gradient(top, $top-color, $bottom-color);
+  background-image: -ms-linear-gradient(top, $top-color, $bottom-color);
+  background-image: -o-linear-gradient(top, $top-color, $bottom-color);
+  background-image: linear-gradient(top, $top-color, $bottom-color);
+  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr="+$top-color+", endColorstr="+$bottom-color+", GradientType=0)";
+}
+
+@mixin shadow( $x-val: 3px, $y-val: 3px, $blur: 5px, $color: $shadow ) {
+  -moz-box-shadow: $x-val $y-val $blur $color; /* Firefox */  
+  -webkit-box-shadow: $x-val $y-val $blur $color; /* Safari, Chrome */  
+  box-shadow: $x-val $y-val $blur $color; /* CSS3 */
+}
+
+@mixin opacity( $opacity-val: 50 ) {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + $opacity-val + ")"; /* IE 8 */
+  -moz-opacity: $opacity-val / 100; /* firefox */
+  -khtml-opacity: $opacity-val / 100; /* safari 1.x */
+  opacity: $opacity-val / 100; /* modern browsers */
+}
+
+@mixin corners( $radius: 15px ) {
+  -moz-border-radius: $radius; /* Firefox */  
+  -webkit-border-radius: $radius; /* Safari, Chrome */  
+  border-radius: $radius; /* CSS3 */ 
+}
+
+@mixin button( $color: lighten($primary, 20%) ) {
+  //@include gradient( $color, lighten($color, 20%) );
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  font-size: 16px;
+  &:hover {
+    cursor: pointer;
+    //@include gradient( $color, darken($color, 20%) );
+  }
+}
+
+/* =CONTACT FORM
+---------------------------------- */
+.rt-mrcf {
+  color: lighten($primary, 20%);
+  label, input, textarea {
+    display: block;
+  }
+  label {
+    font-size: 16px;
+    margin: 20px 0 0 0;
+  }
+  .rt-mrcf-input {
+    font-size: 16px !important;
+    border: 1px solid lighten($primary, 80%);
+    @include corners(3px);
+    width: 90%;
+    padding: 5px;
+    color: lighten($primary, 70%);
+    &:focus {
+      outline: none;
+    }
+  }
+  .rt-mrcf-submit {
+    @include button(); 
+    color: lighten($primary, 100%) !important;
+    margin: 20px 0 0 0;
+    text-align: right;
+    &:focus {
+      outline-color: $accent-1;
+    }
+  }
+  textarea {
+    height: 125px;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.rt-mrcf-required {
+  font-size: 12px !important;
+}
+
+.error {
+  font-size: 14px !important;
+  color: $error;
+  font-style: italic;
+}
+  
+.footer-widget .error {
+  color: lighten($primary, 100%);
+}
+
+/* Styling for footer widget */
+.footer-widget {
+  .rt-mrcf {
+    label, input, textarea {
+      font-size: 13px;
+    }
+  }
+  .rt-success {
+  padding: 0;
+  border: none;
+  background: transparent;
+    span {
+      font-size: 20px;
+      font-weight: bold;
+      float: left;
+    }
+  }
+}
+
+.rt-input-blur {
+  color: $primary !important;
+}
+
+/* Callout Boxes */
+.rt-success {
+  padding: 10px;
+  border: 1px solid $success;
+  background: lighten($primary, 95%);
+  font-size: 14px;
+  span {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 10px 0 0;
+  }
+}
