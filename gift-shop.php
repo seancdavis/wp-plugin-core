@@ -23,8 +23,8 @@ class GiftShop {
 		wp_enqueue_style( 'farbtastic' );
 		wp_enqueue_script( 'farbtastic' );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'settings-script', plugins_url().'/moon-rock-contact-form/rt-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
-		wp_enqueue_style( 'settings-style', plugins_url().'/moon-rock-contact-form/rt-core/settings.css' );
+		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
+		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/settings.css' );
 	}
 	
 	/* Page Registration
