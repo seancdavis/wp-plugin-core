@@ -124,14 +124,14 @@ class Rock {
 	
 	public function gradient($bottom_color, $top_color = '') {
 		if( $top_color == '' ) $top_color = lighten($bottom_color, '40');
-		$gradient .= 'background-color: ' . $top_color . '; ';
-		$gradient .= 'background: -webkit-gradient(linear, left top, left bottom, from('.$top_color.'), to('.$bottom_color.') );';
-		$gradient .= 'background: -webkit-linear-gradient(top, '.$top_color.', '.$bottom_color.');';
-		$gradient .= 'background: -moz-linear-gradient(top, '.$top_color.', '.$bottom_color.');';
-		$gradient .= 'background: -ms-linear-gradient(top, '.$top_color.', '.$bottom_color.');';
-		$gradient .= 'background: -o-linear-gradient(top, '.$top_color.', '.$bottom_color.');';
-		$gradient .= 'background: linear-gradient(top, '.$top_color.', '.$bottom_color.');';
-		$gradient .= 'filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='.$top_color.', endColorstr='.$bottom_color.', GradientType=0);';
+		$gradient .= 'background-color: ' . $top_color . ' !important; ';
+		$gradient .= 'background: -webkit-gradient(linear, left top, left bottom, from('.$top_color.'), to('.$bottom_color.') ) !important;';
+		$gradient .= 'background: -webkit-linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
+		$gradient .= 'background: -moz-linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
+		$gradient .= 'background: -ms-linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
+		$gradient .= 'background: -o-linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
+		$gradient .= 'background: linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
+		$gradient .= 'filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='.$top_color.', endColorstr='.$bottom_color.', GradientType=0) !important;';
 		return $gradient;
 	}
 

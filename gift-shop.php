@@ -3,7 +3,7 @@
 class GiftShop {
 	
 	public function __construct($args, $vals) {
-		// args -- TEST!!!
+		// args
 		$this->post_type = $args['post_type'];
 		$this->title = $args['title'];
 		$this->menu_title = $args['menu_title'];
