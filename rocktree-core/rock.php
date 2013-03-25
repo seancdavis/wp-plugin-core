@@ -2,28 +2,38 @@
 
 class Rock {
 	
-	public function __construct($args)
+	public function __construct($post_type_args, $meta_args = '')
 	{		
-		$this->dir = plugins_url() . '/' . $args['dir'];
-		$this->shortcode = $args['shortcode'];
-		$this->name = $args['name'];
-		$this->item = $args['item'];
-		$this->description = $args['description'];
-		$this->menu_position = $args['menu_position'];
-		$this->post_type = $args['post_type'];
-		$this->prefix = $args['prefix'];
-		$this->shortcode_dir = $args['shortcode_dir'];
-		$this->style_dir = $args['style_dir'];
-		$this->script_dir = $args['script_dir'];
-		$this->dynamic_style_dir = $args['dynamic_style_dir'];
+		$this->dir = plugins_url() . '/' . $post_type_args['dir'];
+		$this->shortcode = $post_type_args['shortcode'];
+		$this->name = $post_type_args['name'];
+		$this->item = $post_type_args['item'];
+		$this->description = $post_type_args['description'];
+		$this->menu_position = $post_type_args['menu_position'];
+		$this->post_type = $post_type_args['post_type'];
+		$this->prefix = $post_type_args['prefix'];
+		$this->shortcode_dir = $post_type_args['shortcode_dir'];
+		$this->style_dir = $post_type_args['style_dir'];
+		$this->script_dir = $post_type_args['script_dir'];
+		$this->dynamic_style_dir = $post_type_args['dynamic_style_dir'];
 		
-		add_action( 'init', array($this, 'register_plugin') );			
+		$this->meta = $meta_args;
+		$this->meta_id = $meta_args['setup']['id'];
+		$this->meta_title = $meta_args['setup']['title'];
+		
+		add_action( 'init', array($this, 'register_post_type') );			
 		add_filter('the_posts', array($this, 'load_conditional_scripts') );
 		add_shortcode( $this->shortcode, array($this, 'display_shortcode') );
 		add_action( 'wp_print_styles', array($this, 'print_dynamic_stylesheet') );
+		if( $meta_args ) {
+			add_action( 'add_meta_boxes', array($this, 'add_metabox') );
+			add_action('save_post', array($this, 'save_metabox'), 1, 2);
+		}
 	}
-
-	public function register_plugin() {
+	
+	/* Post Type Registration
+	-------------------------------------------------------------------------------- */
+	public function register_post_type() {
 		
 		// Custom labels for admin
 		$labels = array(
@@ -42,7 +52,7 @@ class Rock {
 			'menu_name'          => $this->name
 		);
 		
-		$args = array(
+		$post_type_args = array(
 			'labels'        => $labels,
 			'description'   => $this->description,
 			'public'        => true,
@@ -51,9 +61,11 @@ class Rock {
 			'has_archive'   => true,
 		);
 		
-		register_post_type( $this->post_type, $args );
+		register_post_type( $this->post_type, $post_type_args );
 	}
 	
+	/* Load Conditional Scripts
+	-------------------------------------------------------------------------------- */
 	public function load_conditional_scripts($posts){
 		if (empty($posts)) return $posts;	 
 		$shortcode_found = false;
@@ -71,6 +83,8 @@ class Rock {
 		return $posts;
 	}
 	
+	/* Display Shortcode
+	-------------------------------------------------------------------------------- */
 	public function display_shortcode( $atts ) {
 		if( $this->shortcode_found == true && $atts == 'widget' ) { ?>
 			<p>Please use form in body of page.</p>
@@ -80,10 +94,14 @@ class Rock {
 		}
 	}
 	
+	/* Print Dynamic Stylesheet
+	-------------------------------------------------------------------------------- */
 	public function print_dynamic_stylesheet() {
 		include_once $this->dynamic_style_dir;
 	}
 	
+	/* Dynamic Stylesheet Help
+	-------------------------------------------------------------------------------- */
 	public function hex2rgb($hex) {
 	   $hex = str_replace("#", "", $hex);
 	   if(strlen($hex) == 3) {
@@ -133,6 +151,70 @@ class Rock {
 		$gradient .= 'background: linear-gradient(top, '.$top_color.', '.$bottom_color.') !important;';
 		$gradient .= 'filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='.$top_color.', endColorstr='.$bottom_color.', GradientType=0) !important;';
 		return $gradient;
+	}
+	
+	/* Register Meta Box
+	-------------------------------------------------------------------------------- */
+	public function add_metabox() {
+	    add_meta_box($this->meta_id, $this->meta_title, array($this, 'metabox_content'), $this->post_type, 'normal', 'core');
+	}
+	
+	public function metabox_content() {
+		
+		global $post;
+		
+		// Noncename needed to verify where the data originated
+		?><input type="hidden" name="<?php echo $this->post_type; ?>" value="<?php echo wp_create_nonce( plugin_basename(__FILE__) ); ?>" /><?php
+		
+		foreach ($this->meta as $key => $value) {
+			if( $key != 'setup' ) {				
+				
+				$meta_value = get_post_meta($post->ID, $value['name'], true);
+				
+				?><h4 class="feature-sub-title"><?php echo $value['title']; ?></h4>
+				<label for="<?php echo $value['name']; ?>"><?php echo $value['label']; ?></label>
+				<input type="text" name="<?php echo $value['name']; ?>" value="<?php echo $meta_value; ?>" size="50">
+				<br><br><?php				
+				
+				
+			}
+		}
+		
+	}
+	
+	public function save_metabox($post_id, $post) {
+		// verify this came from the our screen and with proper authorization,
+	    // because save_post can be triggered at other times
+		if ( !wp_verify_nonce( $_POST[$this->post_type], plugin_basename(__FILE__) )) {
+			return $post->ID;
+		}
+	    // Is the user allowed to edit the post or page?
+	    if ( !current_user_can( 'edit_post', $post->ID ) ) return $post->ID;
+
+		foreach ($this->meta as $key => $value) {
+			if( $key != 'setup' ) {				
+				
+				$name = $value['name'];
+				$meta_values[$name] = $_POST[$name];	
+				
+			}
+		}
+		
+		/* update or add meta values
+		------------------------------------------------------------------------- */
+	    foreach ($meta_values as $key => $value) { // Cycle through the $feature_meta
+	        if( $post->post_type == 'revision' ) return; // Don't store custom data twice
+	        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
+					
+	        if(get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
+	            update_post_meta($post->ID, $key, $value);
+	        } 
+			else { // If the custom field doesn't have a value
+	            add_post_meta($post->ID, $key, $value);
+	        }		
+	        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
+	    }
+
 	}
 
 }
