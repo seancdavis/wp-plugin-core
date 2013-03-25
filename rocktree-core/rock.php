@@ -29,6 +29,7 @@ class Rock {
 			add_action( 'add_meta_boxes', array($this, 'add_metabox') );
 			add_action('save_post', array($this, 'save_metabox'), 1, 2);
 		}
+		add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
 	}
 	
 	/* Post Type Registration
@@ -159,27 +160,38 @@ class Rock {
 	    add_meta_box($this->meta_id, $this->meta_title, array($this, 'metabox_content'), $this->post_type, 'normal', 'core');
 	}
 	
+	public function load_meta_scripts() {
+		wp_enqueue_style( 'farbtastic' );
+		wp_enqueue_script( 'farbtastic' );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( 'meta-script', plugins_url().'/rocktree-core/rocktree-core/meta.js', array('jquery', 'farbtastic', 'wp-color-picker') );
+	}
+	
 	public function metabox_content() {
-		
 		global $post;
-		
 		// Noncename needed to verify where the data originated
 		?><input type="hidden" name="<?php echo $this->post_type; ?>" value="<?php echo wp_create_nonce( plugin_basename(__FILE__) ); ?>" /><?php
-		
 		foreach ($this->meta as $key => $value) {
 			if( $key != 'setup' ) {				
-				
-				$meta_value = get_post_meta($post->ID, $value['name'], true);
-				
-				?><h4 class="feature-sub-title"><?php echo $value['title']; ?></h4>
-				<label for="<?php echo $value['name']; ?>"><?php echo $value['label']; ?></label>
-				<input type="text" name="<?php echo $value['name']; ?>" value="<?php echo $meta_value; ?>" size="50">
-				<br><br><?php				
-				
-				
+				$meta_value = get_post_meta($post->ID, $key, true);
+				if( $value['title'] != '' ) : ?><h4 class="feature-sub-title"><?php echo $value['title']; ?></h4><?php endif;
+				echo $value['before'];
+				switch( $value['type'] ) {
+					case 'text' : ?> 
+					<label for="<?php echo $key; ?>"><?php echo $value['label']; ?></label>
+					<input type="text" name="<?php echo $key; ?>" value="<?php echo $meta_value; ?>">
+					<?php break;
+					
+					case 'media' : ?>
+					<label for="<?php echo $key; ?>"><?php echo $value['label']; ?></label>
+					<input type="text" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="<?php echo $meta_value; ?>">
+					<a class="button" name="<?php echo $key; ?>_button" id="<?php echo $key; ?>_button">Add Media</a>
+					<?php break;
+				}
+				echo $value['after']; ?>
+				<br><br><?php
 			}
-		}
-		
+		}	
 	}
 	
 	public function save_metabox($post_id, $post) {
@@ -192,11 +204,10 @@ class Rock {
 	    if ( !current_user_can( 'edit_post', $post->ID ) ) return $post->ID;
 
 		foreach ($this->meta as $key => $value) {
-			if( $key != 'setup' ) {				
-				
-				$name = $value['name'];
-				$meta_values[$name] = $_POST[$name];	
-				
+			if( $key != 'setup' ) {	
+				$name = $key;
+				if( $value['type'] == 'text' ) $meta_values[$name] = sanitize_text_field( $_POST[$name] );
+				else $meta_values[$name] = $_POST[$name];	
 			}
 		}
 		
@@ -205,13 +216,8 @@ class Rock {
 	    foreach ($meta_values as $key => $value) { // Cycle through the $feature_meta
 	        if( $post->post_type == 'revision' ) return; // Don't store custom data twice
 	        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
-					
-	        if(get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
-	            update_post_meta($post->ID, $key, $value);
-	        } 
-			else { // If the custom field doesn't have a value
-	            add_post_meta($post->ID, $key, $value);
-	        }		
+	        if(get_post_meta($post->ID, $key, FALSE)) update_post_meta($post->ID, $key, $value); // If the custom field already has a value
+			else add_post_meta($post->ID, $key, $value); // If the custom field doesn't have a value
 	        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
 	    }
 

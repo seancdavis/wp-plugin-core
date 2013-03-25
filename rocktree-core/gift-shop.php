@@ -24,6 +24,7 @@ class GiftShop {
 		wp_enqueue_script( 'farbtastic' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
+		wp_enqueue_script( 'meta-script', plugins_url().'/rocktree-core/meta.js', array('jquery', 'farbtastic', 'wp-color-picker') );
 		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/settings.css' );
 	}
 	
