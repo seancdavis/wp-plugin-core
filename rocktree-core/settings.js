@@ -18,4 +18,21 @@ jQuery(document).ready(function($) {
 		$('#nav_control').attr('value', id);
 	});	
 	$('#tab_').hide();
+	
+	if( $('.rt-post-type-list').length > 0 ) {
+		var ptBkgColor = '#DFDFDF';
+		$('.rt-post-type-list').each(function(){
+			var listID = $(this).attr('id');
+			var id = $('#list-' + listID).attr('value');
+			$('#' + id).css('background', ptBkgColor);
+		});
+		$('.rt-post-type-list li').click(function(){
+			var listID = $(this).parent().attr('id');
+			var id = $(this).attr('id');
+			$('#list-' + listID).attr('value',id)
+			$('.rt-post-type-list li').css('background','none');
+			$(this).css('background', ptBkgColor);
+		});
+	}
+	
 });

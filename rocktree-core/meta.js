@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
 	var _custom_media = true,
 		_orig_send_attachment = wp.media.editor.send.attachment;
 
-	$('.postbox-container .button').click(function(e) {
+	$('.rt-meta-button').click(function(e) {
 		var send_attachment_bkp = wp.media.editor.send.attachment;
 		var button = $(this);
 		var id = button.attr('id').replace('_button', '');

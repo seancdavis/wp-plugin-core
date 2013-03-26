@@ -25,11 +25,11 @@ class Rock {
 		add_filter('the_posts', array($this, 'load_conditional_scripts') );
 		add_shortcode( $this->shortcode, array($this, 'display_shortcode') );
 		add_action( 'wp_print_styles', array($this, 'print_dynamic_stylesheet') );
-		if( $meta_args ) {
+		if( $meta_args && $_GET['action'] == 'edit' ) {
 			add_action( 'add_meta_boxes', array($this, 'add_metabox') );
 			add_action('save_post', array($this, 'save_metabox'), 1, 2);
+			add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
 		}
-		add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
 	}
 	
 	/* Post Type Registration
@@ -185,7 +185,7 @@ class Rock {
 					case 'media' : ?>
 					<label for="<?php echo $key; ?>"><?php echo $value['label']; ?></label>
 					<input type="text" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="<?php echo $meta_value; ?>">
-					<a class="button" name="<?php echo $key; ?>_button" id="<?php echo $key; ?>_button">Add Media</a>
+					<a class="rt-meta-button button" name="<?php echo $key; ?>_button" id="<?php echo $key; ?>_button">Add Media</a>
 					<?php break;
 				}
 				echo $value['after']; ?>

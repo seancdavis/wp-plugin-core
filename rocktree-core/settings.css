@@ -1,3 +1,5 @@
+/* =Navigation
+------------------------------- */
 .rt-settings-tab {	
 	padding: 10px;
 	margin: 10px 0 0 -2px;
@@ -21,6 +23,8 @@
 	cursor: pointer;
 }
 
+/* =Section
+------------------------------- */
 .rt-settings-section {	
 	clear: both;
 	margin: 40px 20px 0 -2px;
@@ -33,15 +37,23 @@
 	display: block;
 }
 
-.call-to-action {
-  padding: 10px 20px;
-  border: none;
-  font-size: 16px;
-  border: none;
-  margin: 10px 0;
-  float: left;
+/* =Pick Lists
+------------------------------- */
+.rt-post-type-list {
+	height: 100px;
+	background: #FFFFFF;
+	padding: 0;
+	margin: 0;
+	overflow: scroll;
+	float: left;
+	border: 1px solid #DFDFDF;
 }
 
-.call-to-action:hover {
+.rt-post-type-list li {
+	padding: 3px 10px;
+	margin: 0;
+}
+
+.rt-post-type-list li:hover {
 	cursor: pointer;
 }

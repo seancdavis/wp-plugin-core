@@ -2,18 +2,17 @@
 
 class GiftShop {
 	
-	public function __construct($args, $vals) {
+	public function __construct($args, $vals) {	
 		// args
 		$this->post_type = $args['post_type'];
 		$this->title = $args['title'];
 		$this->menu_title = $args['menu_title'];
 		$this->menu_slug = $args['menu_slug'];
-		$this->script_dir = $args['script_dir'];
-		$this->style_dir = $args['style_dir'];
+		
 		// vals
 		$this->options = $vals;
 
-		if( $_GET['page'] == $this->menu_slug ) 
+		if( $_GET['page'] == $this->menu_slug )
 			add_action( 'admin_enqueue_scripts', array($this, 'load_admin_scripts') );
 		add_action('admin_menu', array($this, 'register_page') );
 		add_action('admin_init', array($this, 'admin_init') );
@@ -23,9 +22,8 @@ class GiftShop {
 		wp_enqueue_style( 'farbtastic' );
 		wp_enqueue_script( 'farbtastic' );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
-		wp_enqueue_script( 'meta-script', plugins_url().'/rocktree-core/meta.js', array('jquery', 'farbtastic', 'wp-color-picker') );
-		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/settings.css' );
+		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
+		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/rocktree-core/settings.css' );
 	}
 	
 	/* Page Registration
@@ -67,6 +65,8 @@ class GiftShop {
 		$current_option = $this->option($option_name);
 		$label = $this->option_labels($option_name);
 		
+		global $post;
+		
 		switch($args[3]) { // $field['type'] from values array
 		
 			case 'boolean' : ?>
@@ -87,6 +87,16 @@ class GiftShop {
 			
 			case 'color' : ?>
 			<input id="color-<?php echo $option_name; ?>" class="rt-color" name="<?php echo $this->post_type; ?>[<?php echo $option_name; ?>]" size="40" type="text" value="<?php echo $current_option; ?>">
+			<?php break;
+			
+			case 'post_type_single_option' : ?>
+			<input id="list-<?php echo $option_name; ?>" type="text" hidden name="<?php echo $this->post_type; ?>[<?php echo $option_name; ?>]" value="<?php echo $current_option; ?>" >
+			<ul class="rt-post-type-list" id="<?php echo $option_name; ?>"><?php
+				$loop = new WP_Query( array ( 'post_type' => $this->post_type, 'posts_per_page' => '100' ) );
+				while ( $loop->have_posts() ) : $loop->the_post(); ?>
+					<li id="<?php echo $post->ID; ?>"><?php the_title(); ?></li>
+				<?php endwhile; ?>
+			</ul>
 			<?php break;
 			
 			/* MULTIPLE SELECT WILL GO HERE --
@@ -112,14 +122,14 @@ class GiftShop {
 				$tab_control = 1;
 				settings_fields($this->post_type);
 				foreach ($this->options as $key => $value) {
-					$name = $key; ?>			
+					$name = str_replace('_', ' ', $key); ?>			
 					<a class="rt-settings-tab <?php if( $tab_control == 1 ) echo 'rt-settings-tab-selected'; ?>" id="tab_<?php echo $key; ?>"><?php echo $name; ?></a><?php
 					$tab_control++; 
 				}
 				$tab_control = 1;
 				
 	    		foreach ($this->options as $key => $value) {    			    			
-	    			$name = $key; ?>					
+	    			$name = str_replace('_', ' ', $key ); ?>					
 					<div class="rt-settings-section <?php if( $tab_control == 1 ) echo 'rt-settings-section-selected'; ?>" id="<?php echo $key; ?>">
 						<h2><?php echo $name; ?></h2>
 						<?php do_settings_sections( $key ); ?>
