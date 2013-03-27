@@ -90,8 +90,13 @@ class Rock {
 		if( $this->shortcode_found == true && $atts == 'widget' ) { ?>
 			<p>Please use form in body of page.</p>
 		<?php }
+		else if( $atts == 'widget' ) include $this->shortcode_dir;
 		else {
-			include_once $this->shortcode_dir;
+			ob_start();
+			include $this->shortcode_dir;
+			$output = ob_get_contents();
+			ob_end_clean();
+			return $output;
 		}
 	}
 	
