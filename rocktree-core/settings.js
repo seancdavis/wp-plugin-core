@@ -36,4 +36,19 @@ jQuery(document).ready(function($) {
 		});
 	}
 	
+	if( $('.rt-settings-help').length > 0 ) {
+		$('.rt-settings-help').tooltip({
+			position: {
+	        my: "center bottom-20",
+	        at: "center top",
+	        using: function( position, feedback ) {
+	          $( this ).css( position );
+	          $( "<div>" )
+	            .addClass( "arrow" )
+	            .appendTo( this );
+	        }
+	      }
+		});
+	}
+	
 });

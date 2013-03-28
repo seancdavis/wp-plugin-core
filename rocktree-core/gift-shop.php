@@ -22,8 +22,10 @@ class GiftShop {
 		wp_enqueue_style( 'farbtastic' );
 		wp_enqueue_script( 'farbtastic' );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker') );
-		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/rocktree-core/settings.css' );
+		wp_enqueue_script('rt-jquery-ui-core', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js', array('jquery') );
+		wp_enqueue_script( 'settings-script', plugins_url().'/rocktree-core/rocktree-core/settings.js', array('jquery', 'farbtastic', 'wp-color-picker', 'rt-jquery-ui-core') );
+		wp_enqueue_style( 'jquery-ui-smoothness', 'http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css' );
+		wp_enqueue_style( 'settings-style', plugins_url().'/rocktree-core/rocktree-core/settings.css', array('jquery-ui-smoothness') );
 	}
 	
 	/* Page Registration
@@ -45,7 +47,7 @@ class GiftShop {
 					array($this, 'settings_field'), 
 					$sections, 
 					$sections,
-					array($field['name'], $field['before'], $field['after'], $field['type']) 
+					array($field['name'], $field['before'], $field['after'], $field['type'], $field['help']) 
 				);
 			}
 		}	
@@ -107,6 +109,11 @@ class GiftShop {
 			 * */
 			
 		}
+
+		if( $args[4] != '' ) : ?>
+			<span class="rt-settings-help" title="<?php echo $args[4]; ?>">?</span>
+		<?php endif;
+
 		echo $args[2]; // after content
 	}
 	

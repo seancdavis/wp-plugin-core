@@ -10,6 +10,10 @@ $accent-1: #009b77;
 	color: #000;
 	border: none;
 	border-top: 3px solid #FFFFFF;
+	&:active {
+	  outline: 0;
+	  color: #000;
+	}
 }
 
 .rt-settings-tab:hover, .rt-settings-tab-selected {
@@ -93,4 +97,60 @@ div.updated {
   border-color: $accent-1;
   border-radius: 0;
   margin: 20px 20px 20px 0;
+}
+
+/* =Help Tooltip
+------------------------------- */
+.rt-settings-help {
+  padding: 3px 6px;
+  margin: 0 0 0 5px;
+  background: $accent-1;
+  color: #FFFFFF;  
+}
+
+.ui-tooltip {
+  padding: 10px;
+  color: white;
+  border-radius: 3px;
+  font: normal 11px "Helvetica Neue", Sans-Serif;
+  box-shadow: 0 0 2px lighten($primary, 20%);
+  background: $accent-1;
+  border: none;
+}
+
+.arrow {
+  width: 70px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  margin-left: -35px;
+  bottom: -16px;
+  &:after {
+    background: $accent-1;
+    border: none;
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    tranform: rotate(45deg);
+  }
+  .top {
+    top: -16px;
+    bottom: auto;
+    &:after {
+      bottom: -20px;
+      top: auto;
+    }
+  }
+  .left {
+    left: 20%;
+  }
 }
