@@ -19,6 +19,7 @@ jQuery(document).ready(function($) {
 	});	
 	$('#tab_').hide();
 	
+	// control for post-type list where user can choose a post from this post type
 	if( $('.rt-post-type-list').length > 0 ) {
 		var ptBkgColor = '#DFDFDF';
 		$('.rt-post-type-list').each(function(){

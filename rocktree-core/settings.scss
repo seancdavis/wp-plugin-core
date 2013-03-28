@@ -1,0 +1,96 @@
+$primary: #000000;
+$accent-1: #009b77;
+
+/* =Navigation
+------------------------------- */
+.rt-settings-tab {	
+	padding: 10px;
+	margin: 0;
+	float: left;
+	color: #000;
+	border: none;
+	border-top: 3px solid #FFFFFF;
+}
+
+.rt-settings-tab:hover, .rt-settings-tab-selected {
+	border-top-color: #009b77;
+	color: #000000;
+}
+
+.rt-settings-tab:hover {
+	cursor: pointer;
+}
+
+/* =Section
+------------------------------- */
+.rt-settings-section {	
+	clear: both;
+	margin: 0;
+	padding: 20px;
+	display: none;
+}
+
+.rt-settings-section-selected {
+	display: block;
+}
+
+/* =Buttons
+------------------------------- */
+.rt-settings-form #submit {
+	background: $accent-1;
+	color: white;
+	padding: 10px;
+	margin: 0;
+	text-decoration: none;
+	text-align: center;
+	font-size: 12px;
+	text-shadow: none;
+	box-shadow: none;
+	border: none;
+	border-radius: 0;
+	height: 100%;
+	&:hover {
+	  background: darken($accent-1, 5%);
+	}
+}
+
+/* =Line
+------------------------------- */
+.rt-settings-line {
+  background: lighten($primary, 85%);
+  border: none;
+  height: 1px;
+  clear: both;
+  margin: 0 20px 0 0;
+  padding: 0;
+}
+
+/* =Pick Lists
+------------------------------- */
+.rt-post-type-list {
+	height: 100px;
+	background: #FFFFFF;
+	padding: 0;
+	margin: 0;
+	overflow: scroll;
+	float: left;
+	border: 1px solid #DFDFDF;
+}
+
+.rt-post-type-list li {
+	padding: 3px 10px;
+	margin: 0;
+}
+
+.rt-post-type-list li:hover {
+	cursor: pointer;
+}
+
+/* =Boxes
+------------------------------- */
+div.updated {
+  background: lighten($primary, 90%);
+  border-color: $accent-1;
+  border-radius: 0;
+  margin: 20px 20px 20px 0;
+}

@@ -1,59 +1,81 @@
 /* =Navigation
 ------------------------------- */
-.rt-settings-tab {	
-	padding: 10px;
-	margin: 10px 0 0 -2px;
-	float: left;
-	background-color: #CCCCCC;
-	color: #000;
-}
+.rt-settings-tab {
+  padding: 10px;
+  margin: 0;
+  float: left;
+  color: #000;
+  border: none;
+  border-top: 3px solid white; }
+
+.rt-settings-tab:hover, .rt-settings-tab-selected {
+  border-top-color: #009b77;
+  color: #000000; }
 
 .rt-settings-tab:hover {
-	background-color: #EFEFEF;
-	color: #000;
-}
-
-.rt-settings-tab-selected {
-	border: none;
-	color: #000;
-	background-color: #EFEFEF;
-}
-
-.rt-settings-tab:hover {
-	cursor: pointer;
-}
+  cursor: pointer; }
 
 /* =Section
 ------------------------------- */
-.rt-settings-section {	
-	clear: both;
-	margin: 40px 20px 0 -2px;
-	padding: 20px;
-	display: none;
-	background-color: #EFEFEF;
-}
+.rt-settings-section {
+  clear: both;
+  margin: 0;
+  padding: 20px;
+  display: none; }
 
 .rt-settings-section-selected {
-	display: block;
-}
+  display: block; }
+
+/* =Buttons
+------------------------------- */
+.rt-settings-form #submit {
+  background: #009b77;
+  color: white;
+  padding: 10px;
+  margin: 0;
+  text-decoration: none;
+  text-align: center;
+  font-size: 12px;
+  text-shadow: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  height: 100%; }
+  .rt-settings-form #submit:hover {
+    background: #008263; }
+
+/* =Line
+------------------------------- */
+.rt-settings-line {
+  background: #d9d9d9;
+  border: none;
+  height: 1px;
+  clear: both;
+  margin: 0 20px 0 0;
+  padding: 0; }
 
 /* =Pick Lists
 ------------------------------- */
 .rt-post-type-list {
-	height: 100px;
-	background: #FFFFFF;
-	padding: 0;
-	margin: 0;
-	overflow: scroll;
-	float: left;
-	border: 1px solid #DFDFDF;
-}
+  height: 100px;
+  background: #FFFFFF;
+  padding: 0;
+  margin: 0;
+  overflow: scroll;
+  float: left;
+  border: 1px solid #dfdfdf; }
 
 .rt-post-type-list li {
-	padding: 3px 10px;
-	margin: 0;
-}
+  padding: 3px 10px;
+  margin: 0; }
 
 .rt-post-type-list li:hover {
-	cursor: pointer;
-}
+  cursor: pointer; }
+
+/* =Boxes
+------------------------------- */
+div.updated {
+  background: #e6e6e6;
+  border-color: #009b77;
+  border-radius: 0;
+  margin: 20px 20px 20px 0; }

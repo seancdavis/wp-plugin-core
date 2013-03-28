@@ -115,8 +115,9 @@ class GiftShop {
 	public function display_page() { ?>
 		<div>    
 	        <h1><?php echo $this->title; ?></h1>
-			<?php if ($_GET['settings-updated']==true) _e( '<div id="message" class="updated"><p>Settings updated.</p></div>' ); ?>
-	        <form action="options.php" method="post">
+	        <form class="rt-settings-form" action="options.php" method="post">
+	        	<?php if ($_GET['settings-updated']==true) _e( '<div id="message" class="updated"><p>Settings updated.</p></div>' ); ?>
+	        	<hr class="rt-settings-line">
 	        	<input hidden type="text" id="nav_control" name="<?php echo $this->post_type;?>[nav_control]" value="<?php if( $_GET['settings-updated'] == true ) echo $this->option('nav_control'); ?>" />
 	        	<?php
 				$tab_control = 1;
@@ -126,17 +127,18 @@ class GiftShop {
 					<a class="rt-settings-tab <?php if( $tab_control == 1 ) echo 'rt-settings-tab-selected'; ?>" id="tab_<?php echo $key; ?>"><?php echo $name; ?></a><?php
 					$tab_control++; 
 				}
-				$tab_control = 1;
-				
-	    		foreach ($this->options as $key => $value) {    			    			
+				$tab_control = 1; ?>
+				<hr class="rt-settings-line">
+				<?php foreach ($this->options as $key => $value) {    			    			
 	    			$name = str_replace('_', ' ', $key ); ?>					
 					<div class="rt-settings-section <?php if( $tab_control == 1 ) echo 'rt-settings-section-selected'; ?>" id="<?php echo $key; ?>">
 						<h2><?php echo $name; ?></h2>
 						<?php do_settings_sections( $key ); ?>
 					</div><?php 
 					$tab_control++;
-				}
-				submit_button(); ?>
+				} ?>
+				<hr class="rt-settings-line">
+				<?php submit_button('Save All Settings'); ?>
 
 	        </form>
 		
