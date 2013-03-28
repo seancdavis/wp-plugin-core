@@ -16,6 +16,7 @@ class Rock {
 		$this->style_dir = $post_type_args['style_dir'];
 		$this->script_dir = $post_type_args['script_dir'];
 		$this->dynamic_style_dir = $post_type_args['dynamic_style_dir'];
+		$this->taxonomies = $post_type_args['taxonomies'];
 		
 		$this->meta = $meta_args;
 		$this->meta_id = $meta_args['setup']['id'];
@@ -25,11 +26,9 @@ class Rock {
 		add_filter('the_posts', array($this, 'load_conditional_scripts') );
 		add_shortcode( $this->shortcode, array($this, 'display_shortcode') );
 		add_action( 'wp_print_styles', array($this, 'print_dynamic_stylesheet') );
-		if( $meta_args && $_GET['action'] == 'edit' ) {
-			add_action( 'add_meta_boxes', array($this, 'add_metabox') );
-			add_action('save_post', array($this, 'save_metabox'), 1, 2);
-			add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
-		}
+		add_action( 'add_meta_boxes', array($this, 'add_metabox') );
+		add_action('save_post', array($this, 'save_metabox'), 1, 2);
+		add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
 	}
 	
 	/* Post Type Registration
@@ -56,6 +55,7 @@ class Rock {
 		$post_type_args = array(
 			'labels'        => $labels,
 			'description'   => $this->description,
+			'taxonomies'	=> $this->taxonomies,
 			'public'        => true,
 			'menu_position' => $this->menu_position,
 			'supports'      => array( 'title', 'editor', 'thumbnail' ),
@@ -192,6 +192,11 @@ class Rock {
 					<input type="text" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="<?php echo $meta_value; ?>">
 					<a class="rt-meta-button button" name="<?php echo $key; ?>_button" id="<?php echo $key; ?>_button">Add Media</a>
 					<?php break;
+					
+					case 'boolean' : ?>
+					<label for="<?php echo $key; ?>"><?php echo $value['label']; ?></label>
+					<input type="checkbox" name="<?php echo $key; ?>" id="<?php echo $key; ?>" <?php if($meta_value == true) : ?>checked='checked'<?php endif; ?>>
+					<?php break;
 				}
 				echo $value['after']; ?>
 				<br><br><?php
@@ -210,9 +215,9 @@ class Rock {
 
 		foreach ($this->meta as $key => $value) {
 			if( $key != 'setup' ) {	
-				$name = $key;
-				if( $value['type'] == 'text' ) $meta_values[$name] = sanitize_text_field( $_POST[$name] );
-				else $meta_values[$name] = $_POST[$name];	
+				if( $value['type'] == 'text' ) $meta_values[$key] = sanitize_text_field( $_POST[$key] );
+				//else if( $_POST[$name] == '' ) $meta_values[$name] = ''; 
+				else $meta_values[$key] = $_POST[$key];	
 			}
 		}
 		
