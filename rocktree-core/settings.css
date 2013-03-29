@@ -90,6 +90,8 @@ div.updated {
   margin: 0 0 0 5px;
   background: #009b77;
   color: #FFFFFF; }
+  .rt-settings-help:hover {
+    cursor: default; }
 
 .ui-tooltip {
   padding: 10px;

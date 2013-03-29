@@ -105,7 +105,10 @@ div.updated {
   padding: 3px 6px;
   margin: 0 0 0 5px;
   background: $accent-1;
-  color: #FFFFFF;  
+  color: #FFFFFF; 
+  &:hover {
+    cursor: default;
+  }
 }
 
 .ui-tooltip {
