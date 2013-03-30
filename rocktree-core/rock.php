@@ -17,6 +17,7 @@ class Rock {
 		$this->script_dir = $post_type_args['script_dir'];
 		$this->dynamic_style_dir = $post_type_args['dynamic_style_dir'];
 		$this->taxonomies = $post_type_args['taxonomies'];
+		$this->custom_taxonomies = $post_type_args['custom_taxonomies'];
 		
 		$this->meta = $meta_args;
 		$this->meta_id = $meta_args['setup']['id'];
@@ -29,6 +30,7 @@ class Rock {
 		add_action( 'add_meta_boxes', array($this, 'add_metabox') );
 		add_action('save_post', array($this, 'save_metabox'), 1, 2);
 		add_action( 'admin_enqueue_scripts', array($this, 'load_meta_scripts') );
+		if( $this->custom_taxonomies ) add_action( 'init', array($this, 'custom_taxonomies') );
 	}
 	
 	/* Post Type Registration
@@ -231,6 +233,39 @@ class Rock {
 	        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
 	    }
 
+	}
+
+	public function custom_taxonomies() {
+		$tax = $this->custom_taxonomies;
+		foreach( $tax as $key => $value ) {
+			if( $value['hierarchical'] == true ) $hi = true; else $hi = false;
+			$single = $value['singular'];
+			$slug = strtolower( str_replace(' ', '-', $key) );
+			
+			$labels = array(
+			    'name'                => _x( $key, 'taxonomy general name' ),
+			    'singular_name'       => _x( $key, 'taxonomy singular name' ),
+			    'search_items'        => __( 'Search ' . $key ),
+			    'all_items'           => __( 'All '.$key ),
+			    'parent_item'         => __( 'Parent '.$single ),
+			    'parent_item_colon'   => __( 'Parent '.$single.':' ),
+			    'edit_item'           => __( 'Edit '.$single ), 
+			    'update_item'         => __( 'Update '.$single ),
+			    'add_new_item'        => __( 'Add New '.$single ),
+			    'new_item_name'       => __( 'New '.$single.' Name' ),
+			    'menu_name'           => __( $key )
+			  ); 	
+			
+			  $args = array(
+			    'hierarchical'        => $hi,
+			    'labels'              => $labels,
+			    'show_ui'             => true,
+			    'show_admin_column'   => true,
+			    'query_var'           => true,
+			    'rewrite'             => array( 'slug' => $slug )
+			  );
+			register_taxonomy( $slug, $this->post_type, $args );
+		}
 	}
 
 }
